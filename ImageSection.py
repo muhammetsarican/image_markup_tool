@@ -9,6 +9,7 @@ class ImageSection:
     
     frame = cv2.imread(path)
 
+    signedFrame=frame.copy()
     notSignedFrame = frame.copy()
     # frame=cv2.resize(frame,(600,600))
     # print(frame.shape)
@@ -16,7 +17,16 @@ class ImageSection:
     frame_height = 60
     width = frame.shape[1]
     height = frame.shape[0]
-    frame = frame[0:int(height/2), 0:width, :]
+    
+    upsideORdownside=True
+    if upsideORdownside:
+        height_start=int(0)
+        height_end=int(height/2)
+    else:
+        height_start=int(height/2)
+        height_end=int(height)
+        
+    frame = signedFrame[height_start:height_end, 0:width, :]
 
     def __init__(self) -> None:
         pass
@@ -28,10 +38,9 @@ class ImageSection:
         for item in self.frameLocationsList:
             if item["source_image_path"] == path:
                 if os.path.exists(item["resized_image_path"]):
-                    cv2.putText(self.frame, item["resized_image_path"].split(
-                        "/")[-2], (item["start_x"]+5, item["start_y"]+25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-                    cv2.rectangle(self.frame, (item["start_x"], item["start_y"]),
-                                  (item["end_x"], item["end_y"]), (0, 0, 255), 2)
+                    cv2.putText(self.signedFrame, item["resized_image_path"].split("/")[-2], (item["start_x"]+5, item["start_y"]+25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
+                    cv2.rectangle(self.signedFrame, (item["start_x"], item["start_y"]),
+                                  (item["end_x"], item["end_y"]), (100, 0, 255), 2)
 
     def saveResizedImage(self, choice, root):
         # print(data_path+choice.get())
@@ -53,9 +62,9 @@ class ImageSection:
             "source_image_path": path,
             "resized_image_path": f"{data_path+choice.get()}/{counter}.jpg",
             "start_x": self.bbox[0],
-            "start_y": self.bbox[1],
+            "start_y": self.bbox[1]+self.height_start,
             "end_x": self.bbox[0]+self.frame_width,
-            "end_y": self.bbox[1]+self.frame_height
+            "end_y": self.bbox[1]+self.frame_height+self.height_start
         }
         self.frameLocationsList.append(frameLocation)
         with open('frameLocations.json', 'w', encoding='UTF-8') as file:
@@ -78,8 +87,7 @@ class ImageSection:
         self.findMarkedImages()
         self.bbox = cv2.selectROI(self.frame)
 
-        self.image = self.notSignedFrame[int(self.bbox[1]):int(
-            self.bbox[1])+self.frame_height, int(self.bbox[0]):int(self.bbox[0]+self.frame_width), :]
+        self.image = self.notSignedFrame[int(self.bbox[1])+self.height_start:int(self.bbox[1])+self.frame_height+self.height_start, int(self.bbox[0]):int(self.bbox[0]+self.frame_width), :] # here I added the height_start because if I want to take downside of photo I have to add this but if I dont do this resized image will be upside of photo
 
         cv2.destroyAllWindows()
         self.isUiFirstLoad = True
