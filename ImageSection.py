@@ -1,6 +1,6 @@
-import cv2, os, json, keyboard
+import cv2, os, json
 
-path = "D:/OneDrive/Desktop/Resimler/KOOP Image Processing/Raw Data/3.jpeg"
+path = "D:/OneDrive/Desktop/Resimler/KOOP Image Processing/Raw Data/2.jpeg"
 data_path = "D:/OneDrive/Desktop/Resimler/KOOP Image Processing/Clean Data/"
 
 class ImageSection:
@@ -19,16 +19,14 @@ class ImageSection:
     height = frame.shape[0]
     
     upsideORdownside=True
-    def getBaseImage(self):
-        if self.upsideORdownside:
-            height_start=int(0)
-            height_end=int(self.height/2)
-        else:
-            height_start=int(self.height/2)
-            height_end=int(self.height)
-            
-        frame = self.signedFrame[height_start:height_end, 0:self.width, :]
-        return frame, height_start, height_end    
+    if upsideORdownside:
+        height_start=int(0)
+        height_end=int(height/2)
+    else:
+        height_start=int(height/2)
+        height_end=int(height)
+        
+    frame = signedFrame[height_start:height_end, 0:width, :]
 
     def __init__(self) -> None:
         pass
@@ -45,7 +43,6 @@ class ImageSection:
                                   (item["end_x"], item["end_y"]), (100, 0, 255), 2)
 
     def saveResizedImage(self, choice, root):
-        _, height_start, height_end=self.getBaseImage()
         # print(data_path+choice.get())
         # for path in os.listdir(data_path+choice.get()):
         #     print(path)
@@ -65,9 +62,9 @@ class ImageSection:
             "source_image_path": path,
             "resized_image_path": f"{data_path+choice.get()}/{counter}.jpg",
             "start_x": self.bbox[0],
-            "start_y": self.bbox[1]+height_start,
+            "start_y": self.bbox[1]+self.height_start,
             "end_x": self.bbox[0]+self.frame_width,
-            "end_y": self.bbox[1]+self.frame_height+height_start
+            "end_y": self.bbox[1]+self.frame_height+self.height_start
         }
         self.frameLocationsList.append(frameLocation)
         with open('frameLocations.json', 'w', encoding='UTF-8') as file:
@@ -86,18 +83,19 @@ class ImageSection:
     # print(f"{int(self.bbox[1])}:{int(self.bbox[1]+self.bbox[3])},{int(self.bbox[0])}:{int(self.bbox[0]+self.bbox[2])}")
 
     def takeFrame(self):
-        frame, height_start, height_end=self.getBaseImage()
-        self.findMarkedImages()
-        self.bbox = cv2.selectROI(frame)
 
-        self.image = self.notSignedFrame[int(self.bbox[1])+height_start:int(self.bbox[1])+self.frame_height+height_start, int(self.bbox[0]):int(self.bbox[0]+self.frame_width), :] # here I added the height_start because if I want to take downside of photo I have to add this but if I dont do this resized image will be upside of photo
+        self.findMarkedImages()
+        self.bbox = cv2.selectROI(self.frame)
+
+        self.image = self.notSignedFrame[int(self.bbox[1])+self.height_start:int(self.bbox[1])+self.frame_height+self.height_start, int(self.bbox[0]):int(self.bbox[0]+self.frame_width), :] # here I added the height_start because if I want to take downside of photo I have to add this but if I dont do this resized image will be upside of photo
 
         cv2.destroyAllWindows()
+        self.isUiFirstLoad = True
         # print(bbox[1], bbox[1]+frame_height, bbox[0], bbox[0]+frame_width)
         key = cv2.waitKey(0) & 0xff
+
+        if key == ord('q'):
+            cv2.destroyAllWindows()
     
     def passMarking(self):
         self.takeFrame()
-        
-    def closeUI(self):
-        keyboard.press('c')
