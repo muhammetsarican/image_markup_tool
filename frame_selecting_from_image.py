@@ -4,9 +4,8 @@ from ImageSection import ImageSection
 from uiCreate import UI
 
 imageself = ImageSection()
-takeFrameThread = Thread(target=imageself.takeFrame, args=())
 
 root=UI()
-takeFrameThread.start()
 root.home(imageself)
+imageself.start()
 root.mainloop()
