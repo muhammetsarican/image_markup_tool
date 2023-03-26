@@ -3,5 +3,8 @@
         "image_path": "",
         "image_save_path": ""
     },
-    "linux_path": {}
+    "linux_path": {
+        "image_path": "",
+        "image_save_path": ""
+    }
 }
