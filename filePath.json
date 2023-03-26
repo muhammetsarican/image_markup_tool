@@ -1,4 +1,7 @@
 {
-    "image_path": "D:/OneDrive/Desktop/Resimler/KOOP Image Processing/Raw Data/7.jpeg",
-    "image_save_path": "D:/OneDrive/Desktop/Resimler/KOOP Image Processing/Clean Data/"
+    "win_path": {
+        "image_path": "",
+        "image_save_path": ""
+    },
+    "linux_path": {}
 }

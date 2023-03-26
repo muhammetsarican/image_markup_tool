@@ -1,5 +1,3 @@
-from threading import Thread
-
 from ImageSection import ImageSection
 from uiCreate import UI
 

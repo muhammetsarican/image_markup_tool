@@ -4,6 +4,7 @@ from threading import Thread
 with open("filePath.json", "r", encoding="utf-8") as file:
     paths=json.load(file)
 
+paths=paths["win_path"]
 class ImageSection:
     isUiFirstLoad = True
     frameLocationsList = []
@@ -34,8 +35,10 @@ class ImageSection:
     def __init__(self) -> None:
         pass
     def start(self):
-        takeFrameThread = Thread(target=self.takeFrame, args=())
-        takeFrameThread.start()
+        print("start")
+        self.takeFrameThread = Thread(target=self.takeFrame, args=())
+        self.takeFrameThread.daemon=True
+        self.takeFrameThread.start()
         
     def findMarkedImages(self):
         with open("frameLocations.json", "r", encoding="utf-8") as file:
@@ -80,7 +83,7 @@ class ImageSection:
             # file.write(f"source_image_path={path},resized_image_path={data_path+choice.get()}/{counter}.jpg,start_x={self.bbox[0]},start_y={self.bbox[1]},end_x={self.bbox[0]+frame_width},end_y={self.bbox[1]+frame_height}\n")
 
         cv2.rectangle(self.frame, (self.bbox[0], self.bbox[1]), (
-            self.bbox[0]+self.frame_width, self.bbox[1]+self.frame_height), (0, 255, 0), 1)
+            self.bbox[0]+self.bbox[2], self.bbox[1]+self.bbox[3]), (0, 255, 0), 1)
         cv2.putText(self.frame, choice.get(
         ), (self.bbox[0]+5, self.bbox[1]+25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
         cv2.imwrite(f"{paths['image_save_path']+choice.get()}/{counter}.jpg", self.image)
@@ -92,10 +95,21 @@ class ImageSection:
     def takeFrame(self):
         frame, height_start, height_end=self.getBaseImage()
         self.findMarkedImages()                 
-        self.bbox = cv2.selectROI("frame", frame, showCrosshair=True)
-        self.image = self.notSignedFrame[int(self.bbox[1])+height_start:int(self.bbox[1])+self.frame_height+height_start, int(self.bbox[0]):int(self.bbox[0]+self.frame_width), :] # here I added the height_start because if I want to take downside of photo I have to add this but if I dont do this resized image will be upside of photo
-    
+        self.bbox = cv2.selectROI(frame)
+        cv2.destroyAllWindows()
+        # cv2.waitKey(0)
+        # self.takeFrameThread.cancel()
+        # cv2.destroyAllWindows()
+        if(self.bbox[2]<50 or self.bbox[3]<60):
+            self.image = self.notSignedFrame[int(self.bbox[1])+height_start:int(self.bbox[1])+self.frame_height+height_start, int(self.bbox[0]):int(self.bbox[0]+self.frame_width), :] # here I added the height_start because if I want to take downside of photo I have to add this but if I dont do this resized image will be upside of photo
+        else:
+            self.image = self.notSignedFrame[int(self.bbox[1])+height_start:int(self.bbox[1])+self.bbox[3]+height_start, int(self.bbox[0]):int(self.bbox[0]+self.bbox[2]), :] # here I added the height_start because if I want to take downside of photo I have to add this but if I dont do this resized image will be upside of photo
+            self.image=cv2.resize(self.image, (self.frame_width, self.frame_height))
+        # cv2.imshow("notSignedFrame", self.image)
+        # cv2.waitKey(0)
+        
     def passMarking(self):
+        # cv2.destroyWindow("notSignedFrame")
         self.start()
         
     def closeUI(self):
