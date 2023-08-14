@@ -8,26 +8,47 @@ class UI(customtkinter.CTk):
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
         self.grid_columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
     
+    def changeDefaultClass(self, choice=True):
+        defaultClass=""
+        if choice:
+            with open("./defaultClass.txt", "w")as file:
+                file.write(self.combobox.get())
+        else:
+            try:
+                with open("./defaultClass.txt", "r")as file:
+                    defaultClass=str(file.readline()).strip("\n")
+            except:
+                with open("./defaultClass.txt", "w")as file:
+                    file.write(self.combobox.get())
+                    self.changeDefaultClass()
+            return defaultClass
     def home(self, imageself):
         self.paths_button=customtkinter.CTkButton(self, text="Edit Paths", command=self.editPaths)
         self.paths_button.grid(row=0, column=0, columnspan=6, padx=10, pady=5, sticky="ew")
         
         self.combobox = customtkinter.CTkOptionMenu(master=self,
                                     values=[
-                                        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+                                        "0","1", "2", "3", "4", "5", "6", "7", "8", "9"], command=self.changeDefaultClass
                                     )
         self.combobox.grid(row=1, column=0, columnspan=6, padx=10, pady=5, sticky="ew")
-        self.combobox.set("0")  # set initial value
+        self.combobox.set(self.changeDefaultClass(False))  # set initial value
 
-        self.submit = customtkinter.CTkButton(self, text="Save", fg_color="green",
-                                        command=lambda: imageself.saveResizedImage(self.combobox, self)
+        self.submit = customtkinter.CTkButton(self, text=f"Save and next image", fg_color="green",
+                                        command=lambda: imageself.saveResizedImage(self.combobox, self), state="disabled", text_color_disabled="gray", 
                                         )
-        self.submit.grid(row=2, column=0, padx=10, pady=5, sticky="ew", columnspan=4)
+        self.submit.grid(row=2, column=0, padx=10, pady=5, sticky="ew", columnspan=2)
 
+        self.markOnTheSameImage=customtkinter.CTkButton(self, text="Save and same image", fg_color="brown", text_color="white", command=lambda: imageself.saveResizedImage(self.combobox, self, False))
+        self.markOnTheSameImage.grid(row=2, column=2, padx=10, pady=5, sticky="ew", columnspan=2)
+        
+        self.remarkButton=customtkinter.CTkButton(self, text="Re-mark the image", fg_color="purple", text_color="white", command=imageself.remarkTheImage)
+        self.remarkButton.grid(row=2, column=4, padx=10, pady=5, sticky="ew")
+        
         self.passButton=customtkinter.CTkButton(self, text="Pass", fg_color="orange", text_color="black",
                                         command=imageself.passMarking
                                         )
-        self.passButton.grid(row=2, column=4, padx=10, pady=5, sticky="ew", columnspan=2)
+        self.passButton.grid(row=2, column=5, padx=10, pady=5, sticky="ew", columnspan=2)
+        
         self.errLabel = customtkinter.CTkLabel(
             self, text="After select the frame, you have to click space or enter at keyboard.\nIf you want to remark the image please push the pass button!", text_color="red")
         self.errLabel.grid(row=3, column=0, columnspan=6, padx=10, pady=5, sticky="ew")
