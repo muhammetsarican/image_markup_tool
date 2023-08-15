@@ -1,9 +1,9 @@
-from ImageSection import ImageSection
-from uiCreate import UI
+from ImageSection.main import ImageSection
+from UiSection.main import UI
 
-imageself = ImageSection()
-
-root=UI()
-root.home(imageself)
-imageself.start()
-root.mainloop()
+if __name__=="__main__":
+    root=UI()
+    imageself = ImageSection(root)
+    root.createHomePage(imageself)
+    imageself.start()
+    root.mainloop()
