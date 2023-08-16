@@ -10,7 +10,7 @@ class UI(customtkinter.CTk):
         self.grid_columnconfigure((0, 1, 2, 3, 4, 5), weight=1)
     
     def changeDefaultClass(self, choice=True):
-        return ChangeDefaultClass.changeDefaultClass(self, choice=True)
+        return ChangeDefaultClass.changeDefaultClass(self, choice)
         
     def changeButtonStateToNormal(self):
         return ChangeButtonState.changeButtonStateToNormal(self)

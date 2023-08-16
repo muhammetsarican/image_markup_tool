@@ -1,12 +1,11 @@
 from ImageSection.Libraries import cv2
 
 def takeFrame(self):
+    self.ui.changeButtonStateToDisabled()
     passValue=False
     frame, height_start, height_end, width_start, width_end=self.getBaseImage()
     self.findMarkedImages()                 
-    self.ui.changeButtonStateToDisabled()
     self.bbox = cv2.selectROI(frame)
-    self.ui.changeButtonStateToNormal()
     cv2.destroyAllWindows()
     passValue=True if self.bbox[0]<5 and self.bbox[1]<5 and self.bbox[2]<5 and self.bbox[3]<5 else False
     if passValue:
@@ -14,6 +13,7 @@ def takeFrame(self):
     else:
         self.image = self.notSignedFrame[int(self.bbox[1])+height_start:int(self.bbox[1])+self.bbox[3]+height_start, int(self.bbox[0])+width_start:int(self.bbox[0]+self.bbox[2]+width_start), :] # here I added the height_start because if I want to take downside of photo I have to add this but if I dont do this resized image will be upside of photo
         self.image=cv2.resize(self.image, (self.frame_width, self.frame_height))
+    self.ui.changeButtonStateToNormal()
     # cv2.waitKey(0)
     # self.takeFrameThread.cancel()
     # cv2.destroyAllWindows()

@@ -27,10 +27,10 @@ def saveResizedImage(self, choice, root, changeTheImage=True):
                     ensure_ascii=False, indent=4)
             # file.write(f"source_image_path={path},resized_image_path={data_path+choice.get()}/{self.fileCounter()}.jpg,start_x={self.bbox[0]},start_y={self.bbox[1]},end_x={self.bbox[0]+frame_width},end_y={self.bbox[1]+frame_height}\n")
 
-        cv2.rectangle(self.frame, (self.bbox[0], self.bbox[1]), (
-            self.bbox[0]+self.bbox[2], self.bbox[1]+self.bbox[3]), (0, 255, 0), 1)
-        cv2.putText(self.frame, choice.get(
-        ), (self.bbox[0]+5, self.bbox[1]+25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
+        # cv2.rectangle(self.frame, (self.bbox[0], self.bbox[1]), (
+        #     self.bbox[0]+self.bbox[2], self.bbox[1]+self.bbox[3]), (0, 255, 0), 1)
+        # cv2.putText(self.frame, choice.get(
+        # ), (self.bbox[0]+5, self.bbox[1]+25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1)
         cv2.imwrite(f"{self.getPaths()['image_save_path']+choice.get()}/{self.getLastImageCount(choice.get()) or self.fileCounter()}.jpg", self.image)
         self.getSignedPictureCount(choice.get())
         # cv2.destroyAllWindows()
@@ -39,7 +39,7 @@ def saveResizedImage(self, choice, root, changeTheImage=True):
         self.start()
     # print(f"{int(self.bbox[1])}:{int(self.bbox[1]+self.bbox[3])},{int(self.bbox[0])}:{int(self.bbox[0]+self.bbox[2])}")
     else: 
-        print("Saving process passed")
+        print("[INFO]-Saving process passed.")
         self.start()
         
         pass

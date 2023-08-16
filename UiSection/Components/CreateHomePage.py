@@ -15,7 +15,7 @@ def createHomePage(self, imageself):
                                     )
     self.saveAndSkipNextImage.grid(row=2, column=0, padx=10, pady=5, sticky="ew", columnspan="2")
 
-    self.saveAndStaySameImage=customtkinter.CTkButton(self, text="Save and stay same image", fg_color="brown", text_color="white", command=lambda: imageself.saveResizedImage(self.combobox, self, False))
+    self.saveAndStaySameImage=customtkinter.CTkButton(self, text="Save and stay same image", fg_color="brown", text_color="white", command=lambda: imageself.saveResizedImage(self.combobox, self, None))
     self.saveAndStaySameImage.grid(row=2, column=2, padx=10, pady=5, sticky="ew", columnspan="2")
     
     self.remarkButton=customtkinter.CTkButton(self, text="Re-mark the image", fg_color="purple", text_color="white", command=imageself.remarkTheImage)
@@ -26,10 +26,10 @@ def createHomePage(self, imageself):
                                     )
     self.passButton.grid(row=2, column=5, padx=10, pady=5, sticky="ew")
 
-    self.passNextImage=customtkinter.CTkButton(self, text="Next Image", fg_color="black", text_color="white", command=lambda:imageself.changeImagePath(True))
+    self.passNextImage=customtkinter.CTkButton(self, text="Next Image", fg_color="black", text_color="white", command=lambda:imageself.changeImageWithPrevOrNext(True))
     self.passNextImage.grid(row=3, column=3, padx=10, pady=5, sticky="ew")
     
-    self.returnPrevImage=customtkinter.CTkButton(self, text="Prev Image", fg_color="white", text_color="black", command=lambda:imageself.changeImagePath(False))
+    self.returnPrevImage=customtkinter.CTkButton(self, text="Prev Image", fg_color="white", text_color="black", command=lambda:imageself.changeImageWithPrevOrNext(False))
     self.returnPrevImage.grid(row=3, column=4, padx=10, pady=5, sticky="ew")
     
     self.errLabel = customtkinter.CTkLabel(
