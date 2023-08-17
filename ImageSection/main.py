@@ -119,7 +119,9 @@ class ImageSection:
         
     def changeImageWithPrevOrNext(self, isChange):
         self.changeImagePath() if isChange is None else self.changeImagePath(True) if isChange else self.changeImagePath(False)
-        self.start()
+        self.ui.splitTheImageParts(self, isFromImageSection=True)
+        # self.getBaseImage(self.ui)
+        # self.start()
         
     def closeUI(self):
         return CloseUI.closeUI(self)

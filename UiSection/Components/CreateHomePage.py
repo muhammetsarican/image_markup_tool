@@ -13,10 +13,10 @@ def createHomePage(self, imageself):
     self.saveAndSkipNextImage = customtkinter.CTkButton(self, text=f"Save and skip next image", fg_color="green",
                                     command=lambda: imageself.saveResizedImage(self.combobox, self)
                                     )
-    self.saveAndSkipNextImage.grid(row=2, column=0, padx=10, pady=5, sticky="ew", columnspan="2")
+    self.saveAndSkipNextImage.grid(row=2, column=0, padx=10, pady=5, sticky="ew", columnspan=2)
 
     self.saveAndStaySameImage=customtkinter.CTkButton(self, text="Save and stay same image", fg_color="brown", text_color="white", command=lambda: imageself.saveResizedImage(self.combobox, self, None))
-    self.saveAndStaySameImage.grid(row=2, column=2, padx=10, pady=5, sticky="ew", columnspan="2")
+    self.saveAndStaySameImage.grid(row=2, column=2, padx=10, pady=5, sticky="ew", columnspan=2)
     
     self.remarkButton=customtkinter.CTkButton(self, text="Re-mark the image", fg_color="purple", text_color="white", command=imageself.remarkTheImage)
     self.remarkButton.grid(row=2, column=4, padx=10, pady=5, sticky="ew")
@@ -36,12 +36,15 @@ def createHomePage(self, imageself):
         self, text="After select the frame, you have to click space or enter at keyboard.\nIf you want to remark the image please push the pass button!", text_color="red")
     self.errLabel.grid(row=4, column=0, columnspan=6, padx=10, pady=5, sticky="ew")
 
+    self.splitTheImageParts(imageself)
+    
+    self.developerInfo=customtkinter.CTkLabel(self, text="Developed by muhammetsarican", text_color="white", height=36)
+    self.developerInfo.grid(row=7, column=0, padx=10, pady=1, sticky="ew", columnspan=6)
+
     self.exitButton=customtkinter.CTkButton(self, text="Exit", fg_color="red",
                                             command=lambda:self.exitFunction(imageself)
                                             )
-    self.exitButton.grid(row=7, column=5, padx=10, pady=5, sticky="ew")
-    
-    self.splitTheImageParts(imageself)
+    self.exitButton.grid(row=8, column=0, padx=10, pady=2, sticky="ew", columnspan=6)
     # self.switch=customtkinter.CTkSwitch(self, text="Change Image", onvalue="on", offvalue="off",
     #                                     command=lambda:self.changeImageFunc(imageself)
     #                                     )

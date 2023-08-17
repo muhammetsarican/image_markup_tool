@@ -2,7 +2,7 @@ from ImageSection.Libraries import pyautogui
 def getBaseImage(self, ui=None):
     print("[Info]_Get base image is working")
     if ui is not None:
-        print("[Info]_ui is exist")
+        print("[Info]_ui is exist, Ui: ",ui)
         self.width_start=ui.widthVar.get()*pyautogui.size()[0]
         self.height_start=ui.heightVar.get()*pyautogui.size()[1]
         print(f"Ui: {self.width_start, self.height_start}")
