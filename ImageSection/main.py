@@ -5,7 +5,7 @@ class ImageSection:
         print("Get Paths:",self.getPaths()["image_path"])
      
     def getPaths(self):
-        with open("filePath.json", "r", encoding="utf-8") as file:
+        with open("./filePath.json", "r", encoding="utf-8") as file:
              path=json.load(file)
         return path["win_path"] 
       
@@ -13,7 +13,7 @@ class ImageSection:
         return DrawGrid.drawGrid(self, frame)
     
     frame=cv2.imread(getPaths(None)["image_path"])
-    frame=cv2.resize(frame, (pyautogui.size()[1], int(pyautogui.size()[0]/2)))
+    # frame=cv2.resize(frame, (pyautogui.size()[1], int(pyautogui.size()[0]/2)))
     
     isUiFirstLoad = True
     frameLocationsList = []
@@ -35,8 +35,7 @@ class ImageSection:
     height_start=0  
     
     passedImageCount=0
-    def getRawImages(self):
-        print
+
     def getSignedPictureCount(self, choice):
         return GetSignedPictureCount.getSignedPictureCount(self, choice)
     
@@ -65,7 +64,7 @@ class ImageSection:
         print("Width radiobutton toggled, current value:", ui.widthVar.get())
     
     def getBaseImage(self, ui=None):
-        return GetBaseImage.getBaseImage(self, ui=None)
+        return GetBaseImage.getBaseImage(self, ui)
 
     def start(self):
         self.takeFrameThread = Thread(target=self.takeFrame, args=())
@@ -85,9 +84,24 @@ class ImageSection:
         path, imageName=self.getRawImages()    
         for index, image in enumerate(imageName):
             if path+image==self.getPaths()["image_path"]:
-                print(path+image, index)
-                print(imageName)
-                return path+imageName[index] if isPrevOrNext is None else path+imageName[index+1] if isPrevOrNext else path+imageName[index-1]
+                # print(imageName)
+                if isPrevOrNext is None:
+                    return path+imageName[index] 
+                else:
+                    if isPrevOrNext:
+                        if index>=0 and index<imageName.index(imageName[-1]):
+                            return path+imageName[index+1] 
+                        else:
+                            print("[Info]_You reached first or last image.")
+                            return path+imageName[index] 
+                    else:
+                        if index>0 and index<=imageName.index(imageName[-1]):
+                            return path+imageName[index-1] 
+                        else:
+                            print("[Info]_You reached first or last image.")
+                            return path+imageName[index] 
+                        
+                # return path+imageName[index] if isPrevOrNext is None else path+imageName[index+1] if isPrevOrNext else path+imageName[index-1]
             
     def changeImagePath(self, isPrevOrNext=None):
         path=self.getPrevOrNextImage(isPrevOrNext)
@@ -101,11 +115,17 @@ class ImageSection:
     
     def passMarking(self):
         # cv2.destroyWindow("notSignedFrame")
-        self.changeImagePath(True)
+        # self.changeImagePath(True)
         self.start()
         
     def remarkTheImage(self):
         self.start()
+        
+    def changeImageWithPrevOrNext(self, isChange):
+        self.changeImagePath() if isChange is None else self.changeImagePath(True) if isChange else self.changeImagePath(False)
+        self.ui.splitTheImageParts(self, isFromImageSection=True)
+        # self.getBaseImage(self.ui)
+        # self.start()
         
     def closeUI(self):
         return CloseUI.closeUI(self)

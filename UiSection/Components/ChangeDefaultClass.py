@@ -1,4 +1,4 @@
-def changeDefaultClass(self, choice=True):
+def changeDefaultClass(self, choice):
     defaultClass=""
     if choice:
         with open("./defaultClass.txt", "w")as file:

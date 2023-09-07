@@ -6,4 +6,4 @@ if __name__=="__main__":
     imageself = ImageSection(root)
     root.createHomePage(imageself)
     imageself.start()
-    root.mainloop()
+    root.mainloop() 
