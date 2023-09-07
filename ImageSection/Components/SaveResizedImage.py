@@ -54,7 +54,7 @@ def saveDataAboutResizedImages(self, choice):
                 }
             )
         # self.frameLocationsList.append(frameLocation)
-        with open('frameLocations.json', 'w', encoding='UTF-8') as file:
+        with open('./frameLocations.json', 'w', encoding='UTF-8') as file:
             json.dump(self.frameLocationsList, file,
                     ensure_ascii=False, indent=4)
 def saveResizedImage(self, choice, root, changeTheImage):
@@ -71,7 +71,7 @@ def saveResizedImage(self, choice, root, changeTheImage):
             "end_y": self.bbox[1]+self.bbox[3]+height_start
         }
         self.frameLocationsList.append(frameLocation)
-        with open('frameLocations.json', 'w', encoding='UTF-8') as file:
+        with open('./frameLocations.json', 'w', encoding='UTF-8') as file:
             json.dump(self.frameLocationsList, file,
                     ensure_ascii=False, indent=4)
         # print(data_path+choice.get())

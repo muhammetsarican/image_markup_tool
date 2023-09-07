@@ -1,6 +1,6 @@
 from UiSection.Libraries import customtkinter, json
 def editPaths(self):
-    with open("filePath.json", "r", encoding="utf-8") as file:
+    with open("./filePath.json", "r", encoding="utf-8") as file:
         paths=json.load(file)
     path=paths["win_path"]
     def destroyDialog():
@@ -9,7 +9,7 @@ def editPaths(self):
     def savePaths():
         paths["win_path"]["image_path"]=self.image_data_path.get()
         paths["win_path"]["image_save_path"]=self.image_save_path.get()
-        with open("filePath.json", "w", encoding="utf-8") as file:
+        with open("./filePath.json", "w", encoding="utf-8") as file:
             json.dump(paths, file, ensure_ascii=False, indent=4)
         destroyDialog()
         

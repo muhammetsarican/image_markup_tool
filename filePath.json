@@ -1,7 +1,7 @@
 {
     "win_path": {
-        "image_path": "D:/Desktop/Resimler/KOOP Image Processing/Raw Data/14_auto_x2.jpg",
-        "image_save_path": "D:/Desktop/Resimler/KOOP Image Processing/Clean Data/"
+        "image_path": "",
+        "image_save_path": ""
     },
     "linux_path": {
         "image_path": "",

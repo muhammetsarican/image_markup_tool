@@ -5,7 +5,7 @@ class ImageSection:
         print("Get Paths:",self.getPaths()["image_path"])
      
     def getPaths(self):
-        with open("filePath.json", "r", encoding="utf-8") as file:
+        with open("./filePath.json", "r", encoding="utf-8") as file:
              path=json.load(file)
         return path["win_path"] 
       
@@ -84,19 +84,23 @@ class ImageSection:
         path, imageName=self.getRawImages()    
         for index, image in enumerate(imageName):
             if path+image==self.getPaths()["image_path"]:
-                print(path+image, index)
                 # print(imageName)
                 if isPrevOrNext is None:
                     return path+imageName[index] 
                 else:
-                    if index>=0 and index<=len(imageName):
-                        if isPrevOrNext:
+                    if isPrevOrNext:
+                        if index>=0 and index<imageName.index(imageName[-1]):
                             return path+imageName[index+1] 
                         else:
-                            return path+imageName[index-1] 
+                            print("[Info]_You reached first or last image.")
+                            return path+imageName[index] 
                     else:
-                        print("[Info]_You reached first or last image.")
-                        return path+imageName[index] 
+                        if index>0 and index<=imageName.index(imageName[-1]):
+                            return path+imageName[index-1] 
+                        else:
+                            print("[Info]_You reached first or last image.")
+                            return path+imageName[index] 
+                        
                 # return path+imageName[index] if isPrevOrNext is None else path+imageName[index+1] if isPrevOrNext else path+imageName[index-1]
             
     def changeImagePath(self, isPrevOrNext=None):

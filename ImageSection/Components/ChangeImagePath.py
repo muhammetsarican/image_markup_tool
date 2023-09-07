@@ -5,7 +5,7 @@ def changeImagePath(self, path):
     # slashIndex=0
 
     paths={}
-    with open("filePath.json", "r", encoding="utf-8") as file:
+    with open("./filePath.json", "r", encoding="utf-8") as file:
         paths=(json.load(file))
     # slashIndex=str(paths["win_path"]["image_path"]).rfind("/")+1
 

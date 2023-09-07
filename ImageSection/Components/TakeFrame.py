@@ -7,7 +7,7 @@ def takeFrame(self):
     self.findMarkedImages()                 
     self.bbox = cv2.selectROI(frame)
     cv2.destroyAllWindows()
-    passValue=True if self.bbox[0]<5 and self.bbox[1]<5 and self.bbox[2]<5 and self.bbox[3]<5 else False
+    passValue=False if self.bbox[0] and self.bbox[1] and self.bbox[2] and self.bbox[3] else True
     if passValue:
         self.image=None
     else:
@@ -33,3 +33,4 @@ def takeFrame(self):
     #     self.image=cv2.resize(self.image, (self.frame_width, self.frame_height))
     # cv2.imshow("notSignedFrame", self.image)
     # cv2.waitKey(0)
+    
